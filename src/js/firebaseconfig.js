@@ -2,12 +2,13 @@
 import { initializeApp } from "firebase/app";
 import { getAuth , signInWithEmailAndPassword, createUserWithEmailAndPassword , onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
+const firebaseAPIKey = process.env.firebaseAPIKey
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyBBniIdVJL0qTyu6YZh-q3Ib7wm2SDmbvY",
+  apiKey: firebaseAPIKey,
   authDomain: "loginauthtest-c52c8.firebaseapp.com",
   projectId: "loginauthtest-c52c8",
   storageBucket: "loginauthtest-c52c8.firebasestorage.app",

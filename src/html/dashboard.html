@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Dashboard</title>
+</head>
+<body>
+	<header>
+		<h1>Welcome, <div id="loggedInUsername"></div></h1>
+		<button id="logOutBtn">logout</button>
+	</header>
+
+	<div class="main-layout">
+
+		<div id="content-buttons">
+			<button id="menuBtn">Our menu</button>
+			<button id="shoppingCartBtn">Shopping cart</button>
+			<button id="previousOrdersBtn">Previous orders</button>
+		</div>
+
+
+
+
+
+	 <div id="content-section">
+		<div id="menuSection">
+			<select n id="genreSelect">
+				<option value="">All genres</option>
+				<option value="28">Action</option>
+				<option value="35">Comedy</option>
+				<option value="18">Drama</option>
+				<option value="878">Sci-Fi</option>
+				<option value="27">Horror</option>
+			</select>
+
+			<h2>Available movies</h2>
+			<div id="movieGrid" class="moviegrid"></div>
+		</div>
+		<div id="shoppingCart">
+			<h2>Cart</h2>
+		</div>
+		<div id="previousOrders">
+			<h2>Order history</h2>
+		</div>
+	 </div>
+
+	</div>
+
+
+
+	
+
+
+	<script type="module" src="../js/dashboard.js"></script>
+</body>
+</html>

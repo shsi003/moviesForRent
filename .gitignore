@@ -1,0 +1,25 @@
+#Environment variables
+.env
+.env.local
+.env.*.local
+
+
+#dependency folders
+node_modules/
+jspm_packages/
+
+
+#webpack output
+dist/
+
+
+# Log files
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# System & Editor files
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

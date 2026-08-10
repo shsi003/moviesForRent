@@ -37,12 +37,19 @@ function renderMovies(movies) {
 		?`${IMAGE_BASE_URL}${movie.poster_path}`
 		:'https://via.placeholder.com/500x750?text=No+Poster';
 
+		const movieSynopsis = getSentences(movie.overview, 2);
+
 		return `
 		<div class="movie-card" data-id="${movie.id}">
 			<img src="${poster}" alt="${movie.title}">
 			<div class="movie-info">
 			<h3>${movie.title}</h3>
 			<p class="rating">⭐️ ${movie.vote_average.toFixed(1)}/10 </p>
+
+			
+			<p class="actors" id="cast-${movie.id}"></p>	
+			<p class="synopsis">${movieSynopsis}</p>
+
 			<p class="movie-price"> 40kr / 48t</p>
 			<button class="rent-Btn" data-id="${movie.id}" data-title="${movie.title.replace(/"/g, '&quot;')}">
 			Add to cart
@@ -59,11 +66,18 @@ function renderMovies(movies) {
 			handleRentMovie(movieId, movieTitle);
 		});
 	});
+
+	movies.forEach(movie => {
+		loadMovieCast(movie.id);
+	})
+
+
 }
 
 //Marked DOM-Elements for making filtering work
 const genreSelect = document.getElementById('genreSelect');
 const searchInput = document.getElementById('searchInput');
+
 
 export function movieFiltering(){
 
@@ -77,4 +91,39 @@ export function movieFiltering(){
 		});
 	}
 
+}
+
+
+async function loadMovieCast(movieId) {
+
+	const castElement = document.getElementById(`cast-${movieId}`);
+
+	try{
+		const url =`${TMBD_BASE_URL}/movie/${movieId}/credits?api_key=${TMBD_API_KEY}&language=en-US`;
+	const response = await fetch(url);
+		if(!response.ok) return;
+
+	const data = await response.json();
+
+	const topActors = data?.cast?.slice(0,3).map(actor => actor.name).join(', ');
+
+
+	if(castElement) {
+		castElement.innerHTML = `<strong>Cast:</strong> ${topActors || 'N/A'}`;
+	}
+
+	} catch(error){
+		console.error(`Failed to load cast for movie: ${movie.title}  id: ${movie.id}`, error);
+	}
+	
+}
+
+console.log(`${TMBD_BASE_URL}/movie/popular?api_key=${TMBD_API_KEY}&language=en-US`);
+
+
+function getSentences(text, count = 2) {
+	if(!text) return 'No Synopsis available';
+	const sentences = text.match(/[^.!?]+[.!?]+/g);
+	if(!sentences) return text;
+	return sentences.slice(0, count).join(' ');
 }

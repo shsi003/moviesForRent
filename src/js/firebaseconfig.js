@@ -2,7 +2,7 @@
 import { initializeApp } from "firebase/app";
 import { getAuth , signInWithEmailAndPassword, createUserWithEmailAndPassword , onAuthStateChanged, signOut } from "firebase/auth";
 import { getFirestore, setDoc, doc } from 'firebase/firestore/lite';
-const firebaseAPIKey = process.env.firebaseAPIKey
+const firebaseAPIKey = 'AIzaSyBBniIdVJL0qTyu6YZh-q3Ib7wm2SDmbvY'
 // TODO: Add SDKs for Firebase products that you want to use
 // https://firebase.google.com/docs/web/setup#available-libraries
 

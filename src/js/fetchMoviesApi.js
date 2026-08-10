@@ -1,3 +1,6 @@
+import { addMovieToCart } from "./cartService.js";
+
+
 const TMBD_API_KEY = process.env.TMBD_API_KEY
 const TMBD_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
@@ -50,8 +53,8 @@ function renderMovies(movies) {
 			<p class="actors" id="cast-${movie.id}"></p>	
 			<p class="synopsis">${movieSynopsis}</p>
 
-			<p class="movie-price"> 40kr / 48t</p>
-			<button class="rent-Btn" data-id="${movie.id}" data-title="${movie.title.replace(/"/g, '&quot;')}">
+			<p class="movie-price"> 40kr / 48hrs</p>
+			<button class="addToCartBtn" data-id="${movie.id}" data-title="${movie.title.replace(/"/g, '&quot;')}">
 			Add to cart
 			</button>
 			</div>
@@ -59,11 +62,17 @@ function renderMovies(movies) {
 		`;
 	}).join('');
 
-	document.querySelectorAll('.rent-Btn').forEach(btn => {
+	document.querySelectorAll('.addToCartBtn').forEach(btn => {
 		btn.addEventListener('click', (e) => {
-			const movieId = e.target.getAttribute('data-id');
-			const movieTitle = e.target.getAttribute('data-title');
-			handleRentMovie(movieId, movieTitle);
+			const movieData = {
+				id: e.target.getAttribute('data-id'),
+				title: e.target.getAttribute('data-title'),
+				poster: e.target.getAttribute('data-poster'),
+				price: 40
+			};
+
+			addMovieToCart(movieData);
+		
 		});
 	});
 
@@ -118,7 +127,6 @@ async function loadMovieCast(movieId) {
 	
 }
 
-console.log(`${TMBD_BASE_URL}/movie/popular?api_key=${TMBD_API_KEY}&language=en-US`);
 
 
 function getSentences(text, count = 2) {
@@ -127,3 +135,5 @@ function getSentences(text, count = 2) {
 	if(!sentences) return text;
 	return sentences.slice(0, count).join(' ');
 }
+
+

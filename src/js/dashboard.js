@@ -7,14 +7,17 @@ import { showMenu, showCart, showOrders } from "./dashboardbuttons.js";
 
 import { fetchMovies, movieFiltering } from "./fetchMoviesApi.js";
 
+import { renderCartView, syncCartfromFireStore } from "./cartService.js";
+
 
 import '../css/dashboard.css';
 import '../css/fetchMovies.css';
 
+
 document.addEventListener("DOMContentLoaded", () => {
 	
 	const menuSection = document.getElementById('menuSection');
-	const shoppingCart = document.getElementById('shoppingCart');
+	const shoppingCart = document.getElementById('shoppingCartSection');
 	const previousOrders = document.getElementById('previousOrders');
 
 	const menuBtn = document.getElementById('menuBtn');
@@ -34,14 +37,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 	
 	
-	fetchMovies();
-	movieFiltering();
-
-
-
-	
-
-
 
 
 	onAuthStateChanged(auth, (user) => {
@@ -61,7 +56,16 @@ document.addEventListener("DOMContentLoaded", () => {
 		  .catch((error) => {
 			console.log("Error fetching document");
 		  })
-		  // ...
+
+		  fetchMovies();
+		  movieFiltering();
+
+
+		  showMenu();
+	      syncCartfromFireStore();
+		  renderCartView();
+	  
+		  
 		} else {
 			console.log("User id not found");
 			window.location.href = 'index.html';
@@ -75,7 +79,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
 	  
-	  showMenu();
-	 
+	  
 
 })

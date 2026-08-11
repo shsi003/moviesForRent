@@ -1,43 +1,134 @@
-.main-layout {
+:root {
+	--bg-primary: #121212;
+	--bg-surface: #1e1e1e;
+	--bg-surface-hover: #2a2a2a;
+	--accent-color: #e50914;
+	--accent-color-hover: #f40612;
+	--text-main: #ffffff;
+	--text-muted: #aaaaaa;
+	--border-color: #333333;
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--transition-fast: 0.2s ease;
+  }
+  
+  /* --- Global Reset & Page Container --- */
+  * {
+	box-sizing: border-box;
+	margin: 0;
+	padding: 0;
+  }
+  
+  body {
+	background-color: var(--bg-primary);
+	color: var(--text-main);
+	font-family: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+	min-height: 100vh;
+  }
+  
+  /* --- Header Section --- */
+  header {
 	display: flex;
-	gap: 2rem;
-	align-items: flex-start;
-	margin-top: 1rem;
-}
-
-
-#content-buttons{
-
+	justify-content: space-between;
+	align-items: center;
+	padding: 1.25rem 2rem;
+	background-color: var(--bg-surface);
+	border-bottom: 1px solid var(--border-color);
+  }
+  
+  header h1 {
 	display: flex;
-	flex-direction: column;
-	min-width: 200px;
-	position: sticky;
-	top: 1rem;
-
-}
-
-#content-buttons, button{
-	border: 2px solid black;
-	margin: 1rem 0;
-	padding: 0.75rem 1rem;
-	width: 60%;
+	align-items: center;
+	gap: 0.5rem;
+	font-size: 1.35rem;
+	font-weight: 600;
+	color: var(--text-main);
+  }
+  
+  #loggedInUsername {
+	color: var(--accent-color);
+	font-weight: 700;
+  }
+  
+  #logOutBtn {
+	background: transparent;
+	color: var(--text-muted);
+	border: 1px solid var(--border-color);
+	padding: 0.5rem 1rem;
+	border-radius: var(--radius-sm);
+	font-size: 0.85rem;
 	cursor: pointer;
-	text-align: left;
-	
-}
-
-#content-section{
-	flex-grow: 1;
-}
-
-#logOutBtn {
-
-	border: 2px solid black;
-	margin: 1rem 0;
-	padding: 0.75rem 1rem;
-	width: 180px;
+	transition: all var(--transition-fast);
+  }
+  
+  #logOutBtn:hover {
+	background-color: var(--accent-color);
+	color: var(--text-main);
+	border-color: var(--accent-color);
+  }
+  
+  /* --- Main Layout Container --- */
+  .main-layout {
+	max-width: 1200px;
+	margin: 2rem auto;
+	padding: 0 1.5rem;
+  }
+  
+  /* --- Navigation Tabs --- */
+  #content-buttons {
+	display: flex;
+	gap: 0.75rem;
+	border-bottom: 1px solid var(--border-color);
+	padding-bottom: 1rem;
+	margin-bottom: 2rem;
+  }
+  
+  #content-buttons button {
+	background-color: var(--bg-surface);
+	color: var(--text-muted);
+	border: 1px solid var(--border-color);
+	padding: 0.75rem 1.25rem;
+	border-radius: var(--radius-sm);
+	font-weight: 600;
+	font-size: 0.95rem;
 	cursor: pointer;
-	text-align: left;
-	
-
-}
+	transition: all var(--transition-fast);
+  }
+  
+  #content-buttons button:hover {
+	background-color: var(--bg-surface-hover);
+	color: var(--text-main);
+  }
+  
+  /* Style for the active tab (apply .active class via JS) */
+  #content-buttons button.active {
+	background-color: var(--accent-color);
+	color: var(--text-main);
+	border-color: var(--accent-color);
+  }
+  
+  /* --- Main Content Section & Tabs --- */
+  #content-section {
+	width: 100%;
+  }
+  
+  /*  for top-level section headings */
+  #content-section h2 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 1.25rem;
+	color: var(--text-main);
+  }
+  
+  /* --- Tab Content Switching --- */
+  #menuSection,
+  #shoppingCartSection,
+  #previousOrders {
+	display: none;
+  }
+  
+  #menuSection.active-section,
+  #shoppingCartSection.active-section,
+  #previousOrders.active-section {
+	display: block;
+  }

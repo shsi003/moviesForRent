@@ -14,7 +14,8 @@ import { renderOrderHistory } from "./orderingAndHistory.js";
 
 import '../css/dashboard.css';
 import '../css/fetchMovies.css';
-
+import '../css/ordersSection.css';
+import '../css/cart.css';
 
 
 document.addEventListener("DOMContentLoaded", () => {

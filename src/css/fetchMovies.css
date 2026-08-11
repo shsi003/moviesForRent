@@ -1,58 +1,149 @@
-.catalog-controls {
-	display: flex;
-	gap: 15px;
-	margin-bottom: 20px;
+:root {
+	--bg-primary: #121212;
+	--bg-surface: #1e1e1e;
+	--accent-color: #e50914;
+	--accent-color-hover: #f40612;
+	--text-main: #ffffff;
+	--text-muted: #aaaaaa;
+	--border-color: #333333;
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--transition-fast: 0.2s ease;
   }
   
-  .catalog-controls input, .catalog-controls select {
-	padding: 10px;
-	border-radius: 5px;
-	border: 1px solid #ccc;
-	font-size: 1rem;
+  /* --- Filter & Search Bar --- */
+  .filter-container {
+	display: flex;
+	gap: 1rem;
+	max-width: 1200px;
+	margin: 2rem auto 1rem auto;
+	padding: 0 1rem;
   }
   
-  .movie-grid {
-	display: flex;
-	flex-wrap: wrap;
+  #searchInput,
+  #genreSelect {
+	background-color: var(--bg-surface);
+	color: var(--text-main);
+	border: 1px solid var(--border-color);
+	padding: 0.75rem 1rem;
+	border-radius: var(--radius-sm);
+	font-size: 0.95rem;
+	outline: none;
+	transition: border-color var(--transition-fast);
+  }
+  
+  #searchInput {
+	flex: 1;
+  }
+  
+  #searchInput:focus,
+  #genreSelect:focus {
+	border-color: var(--accent-color);
+  }
+  
+  /* --- Movie Grid Layout --- */
+  #movieGrid {
+	display: grid;
 	grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-	gap: 20px;
-	justify-content: end;
+	gap: 1.5rem;
+	max-width: 1200px;
+	margin: 1.5rem auto;
+	padding: 0 1rem;
+	color: var(--text-main);
+	font-family: system-ui, -apple-system, sans-serif;
   }
   
+  #movieGrid p {
+	color: var(--text-muted);
+	grid-column: 1 / -1;
+  }
+  
+  /* --- Movie Card --- */
   .movie-card {
-	border: 1px solid #e0e0e0;
-	border-radius: 8px;
+	background-color: var(--bg-surface);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
 	overflow: hidden;
-	background: #fff;
 	display: flex;
 	flex-direction: column;
-	justify-content: space-between;
-	margin:20px;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+  
+  .movie-card:hover {
+	transform: translateY(-4px);
+	border-color: #555555;
   }
   
   .movie-card img {
 	width: 100%;
-	height: 20%;
+	height: 320px;
 	object-fit: cover;
+	background-color: var(--bg-primary);
   }
   
+  /* Movie Info Section */
   .movie-info {
-	padding: 12px;
+	padding: 1rem;
 	display: flex;
 	flex-direction: column;
-	gap: 6px;
+	flex-grow: 1;
   }
   
+  .movie-info h3 {
+	font-size: 1.1rem;
+	font-weight: 700;
+	margin-bottom: 0.4rem;
+	color: var(--text-main);
+	line-height: 1.3;
+  }
+  
+  .rating {
+	font-size: 0.85rem;
+	color: #ffd700;
+	margin-bottom: 0.5rem;
+  }
+  
+  .actors {
+	font-size: 0.85rem;
+	color: var(--text-muted);
+	margin-bottom: 0.5rem;
+	min-height: 2.2rem;
+  }
+  
+  .actors strong {
+	color: var(--text-main);
+  }
+  
+  .synopsis {
+	font-size: 0.85rem;
+	color: var(--text-muted);
+	line-height: 1.4;
+	margin-bottom: 1rem;
+	flex-grow: 1;
+  }
+  
+  .movie-price {
+	font-weight: 700;
+	font-size: 0.95rem;
+	color: var(--text-main);
+	margin-bottom: 0.75rem;
+  }
+  
+  /* Add to Cart Button */
   .addToCartBtn {
-	background-color: #e50914;
-	color: #fff;
+	background-color: var(--accent-color);
+	color: var(--text-main);
 	border: none;
-	padding: 10px;
-	border-radius: 4px;
+	padding: 0.65rem 1rem;
+	border-radius: var(--radius-sm);
+	font-weight: 600;
+	font-size: 0.9rem;
 	cursor: pointer;
-	font-weight: bold;
+	width: 100%;
+	transition: background-color var(--transition-fast), transform var(--transition-fast);
   }
   
   .addToCartBtn:hover {
-	background-color: #b81d24;
+	background-color: var(--accent-color-hover);
   }

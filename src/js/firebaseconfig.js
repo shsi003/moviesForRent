@@ -96,6 +96,10 @@ export function handleSignIn(e) {
 	const email = document.getElementById('log-email').value;
 	const password = document.getElementById('log-password').value;
 
+	if(!email || !password){
+		alert("Please enter both email and password.");
+	}
+
 
 
   signInWithEmailAndPassword(auth, email, password)

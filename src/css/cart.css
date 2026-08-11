@@ -1,0 +1,139 @@
+:root {
+	--bg-primary: #121212;
+	--bg-surface: #1e1e1e;
+	--accent-color: #e50914;
+	--accent-color-hover: #f40612;
+	--text-main: #ffffff;
+	--text-muted: #aaaaaa;
+	--border-color: #333333;
+	--radius-sm: 4px;
+	--radius-md: 8px;
+	--transition-fast: 0.2s ease;
+  }
+  
+  /* --- Container & Headings --- */
+  #shoppingCart {
+	max-width: 900px;
+	margin: 2rem auto;
+	padding: 0 1rem;
+	color: var(--text-main);
+	font-family: system-ui, -apple-system, sans-serif;
+  }
+  
+  #shoppingCart h2 {
+	font-size: 1.5rem;
+	font-weight: 700;
+	margin-bottom: 1.5rem;
+	color: var(--text-main);
+  }
+  
+  #shoppingCart p {
+	color: var(--text-muted);
+	font-size: 1rem;
+  }
+  
+  /* --- Cart List --- */
+  .cartItemsList {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
+	margin-bottom: 2rem;
+  }
+  
+  /* --- Cart Item --- */
+  .cart-item {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--bg-surface);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	padding: 1rem;
+	box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+	transition: transform var(--transition-fast), border-color var(--transition-fast);
+  }
+  
+  .cart-item:hover {
+	border-color: #555555;
+	transform: translateY(-2px);
+  }
+  
+  /* Poster & Info Wrapper */
+  .cart-item > div:first-child {
+	display: flex;
+	align-items: center;
+	gap: 1rem;
+  }
+  
+  .cart-item img {
+	width: 50px;
+	height: 75px;
+	object-fit: cover;
+	border-radius: var(--radius-sm);
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+  }
+  
+  .cart-item h3 {
+	font-size: 1.1rem;
+	font-weight: 600;
+	margin-bottom: 0.25rem;
+	color: var(--text-main);
+  }
+  
+  .cart-item p {
+	font-size: 0.9rem;
+	color: var(--text-muted);
+  }
+  
+  /* Remove Button */
+  .removeItemBtn {
+	background: transparent;
+	color: var(--text-muted);
+	border: 1px solid var(--border-color);
+	padding: 0.5rem 0.9rem;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	font-size: 0.85rem;
+	transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+  }
+  
+  .removeItemBtn:hover {
+	background-color: var(--accent-color);
+	color: var(--text-main);
+	border-color: var(--accent-color);
+  }
+  
+  /* --- Cart Summary & Checkout --- */
+  .cartSummary {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	background-color: var(--bg-surface);
+	border: 1px solid var(--border-color);
+	border-radius: var(--radius-md);
+	padding: 1.25rem;
+	margin-top: 1.5rem;
+  }
+  
+  .cartSummary h3 {
+	font-size: 1.25rem;
+	font-weight: 700;
+	color: var(--text-main);
+  }
+  
+  #checkoutBtn {
+	background-color: var(--accent-color);
+	color: var(--text-main);
+	border: none;
+	padding: 0.75rem 1.5rem;
+	font-size: 1rem;
+	font-weight: 600;
+	border-radius: var(--radius-sm);
+	cursor: pointer;
+	transition: background-color var(--transition-fast), transform var(--transition-fast);
+  }
+  
+  #checkoutBtn:hover {
+	background-color: var(--accent-color-hover);
+	transform: scale(1.02);
+  }

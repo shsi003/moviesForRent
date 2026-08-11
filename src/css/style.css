@@ -41,6 +41,37 @@
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
     text-align: center;
   }
+
+  /* --- Header Positioned at Top --- */
+.auth-header {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 1.5rem 0;
+  text-align: center;
+}
+
+.auth-header h1 {
+  font-size: 2rem;
+  font-weight: 800;
+  color: var(--accent-color);
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* Ensure body centers the card without header pushing it down */
+body {
+  background-color: var(--bg-primary);
+  color: var(--text-main);
+  font-family: system-ui, -apple-system, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 1.5rem;
+  position: relative;
+}
   
   /* --- Titles & Text --- */
   .form-title {

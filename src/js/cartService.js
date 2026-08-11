@@ -29,6 +29,8 @@ export async function syncCartfromFireStore(userId) {
 
 
 export async function addMovieToCart(movie) {
+	console.log("Movie object recieved by addMovieToCart:", movie);
+
 	const user = auth.currentUser;
 	if(!user) return alert("please login to add items to cart.");
 
@@ -43,11 +45,24 @@ export async function addMovieToCart(movie) {
 			return;
 		}
 
-		const posterUrl = movie.poster || movie.poster_path;
+		const rawPoster = 
+		(movie.poster !== null && movie.poster !== undefined) ? movie.poster :
+		(movie.poster_path !== null && movie.poster_path !== undefined) ? movie.poster_path:
+		(movie.backdrop_path !== null && movie.backdrop_path !== undefined) ? movie-backdrop_path:
+		'';
+
+		let finalPoster = '';
+		if (typeof rawPoster === 'string' && rawPoster.trim() !== ''){
+			finalPoster = rawPoster.startsWith('http')
+			? rawPoster
+			:  `https://image.tmdb.org/t/p/w500${rawPoster.startsWith('/') ? '' : '/'}${rawPoster}`;
+		}
+
 		const newItem = {
 			id: targetId,
 			title: movie.title,
-			price: 40,
+			price: Number(movie.price) ||40,
+			poster: finalPoster
 		}
 
 		cart.push(newItem);
@@ -88,7 +103,10 @@ export async function renderCartView() {
 
 	const totalPrice = cart.reduce((sum, item) => sum +(item.price || 40), 0);
 
-	const itemsHTML = cart.map(item => `
+	const itemsHTML = cart.map(item => {
+		
+		
+		return`
 		<div class="class-item">
 			<div>
 				${item.poster ? `<img src="${item.poster}" alt="${item.title}">`: ''}	
@@ -99,7 +117,7 @@ export async function renderCartView() {
 			</div>
 			<button class="removeItemBtn" data-id="${item.id}">Remove</button>
 		</div>
-	`).join('');
+	`}).join('');
 
 	shoppingCart.innerHTML = `
 		<div class="cartItemsList>
@@ -120,7 +138,7 @@ export async function renderCartView() {
 		});
 	});
 
-
+ 
 }
 
 

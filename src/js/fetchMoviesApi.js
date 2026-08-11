@@ -54,7 +54,11 @@ function renderMovies(movies) {
 			<p class="synopsis">${movieSynopsis}</p>
 
 			<p class="movie-price"> 40kr / 48hrs</p>
-			<button class="addToCartBtn" data-id="${movie.id}" data-title="${movie.title.replace(/"/g, '&quot;')}">
+			<button class="addToCartBtn" 
+			data-id="${movie.id}" 
+			data-title="${movie.title.replace(/"/g, '&quot;')}"
+			data-poster = "${poster}"
+			>
 			Add to cart
 			</button>
 			</div>
@@ -64,14 +68,19 @@ function renderMovies(movies) {
 
 	document.querySelectorAll('.addToCartBtn').forEach(btn => {
 		btn.addEventListener('click', (e) => {
+
+			const thisTarget = e.currentTarget;
+
 			const movieData = {
-				id: e.target.getAttribute('data-id'),
-				title: e.target.getAttribute('data-title'),
-				poster: e.target.getAttribute('data-poster'),
+				id: thisTarget.getAttribute('data-id'),
+				title: thisTarget.getAttribute('data-title'),
+				poster: thisTarget.getAttribute('data-poster'),
 				price: 40
 			};
 
 			addMovieToCart(movieData);
+
+			console.log("Constructed moviedata payload:", movieData);
 		
 		});
 	});

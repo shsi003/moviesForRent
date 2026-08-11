@@ -1,3 +1,4 @@
+//IMPORTS
 import {doc, getDoc, setDoc} from 'firebase/firestore/lite';
 import { db, auth } from './firebaseconfig.js';
 import { checkout } from './orderingAndHistory.js';
@@ -5,11 +6,13 @@ import { checkout } from './orderingAndHistory.js';
 
 
 
-
+//function for syncing cart collection from Firestore
 export async function syncCartfromFireStore(userId) {
+	//checks the authenticated user
 	const user = auth.currentUser;
 	if(!user) return;
 
+	//Finds users cart-array based on uid inside "user" database collection
 	try{
 		const userDocRef = doc(db, "users", user.uid);
 		const docSnap = await getDoc(userDocRef);
@@ -28,7 +31,7 @@ export async function syncCartfromFireStore(userId) {
 
 
 
-
+//Function for adding movies to cart
 export async function addMovieToCart(movie) {
 	console.log("Movie object recieved by addMovieToCart:", movie);
 
@@ -41,21 +44,25 @@ export async function addMovieToCart(movie) {
 		const userDoc = await getDoc(userDocRef);
         const userData = userDoc.exists() ? userDoc.data() : {};
 
+		//Call sync function from earlier to sync cart
 		const cart = await syncCartfromFireStore(user.uid);
 		const orders = Array.isArray(userData.orders) ? userData.orders : [];
 
+		//Targets movie-id to see if they´re already in cart
 		const targetId = String(movie.id);
 		const exists = cart.some(item => String(item.id) === targetId);
 
+		//alerts the user if the movie is already in cart
 		if (exists){
 			alert(`"${movie.title}" is already in your cart!`);
 			return;
 		}
 
-
+		//checks time limit
 		const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
         const now = Date.now();
 
+		//Goes through orders and checks if they´ve already rented the movie (less than 48 hours ago)
         const activeRental = orders.find(order => {
             const orderTime = new Date(order.createdAt).getTime();
             const isWithin48Hours = (now - orderTime) < FORTY_EIGHT_HOURS_MS;
@@ -73,6 +80,7 @@ export async function addMovieToCart(movie) {
             return;
         }
 
+		//fallbacks to make sure poster is fetched correctly
 		const rawPoster = 
 		(movie.poster !== null && movie.poster !== undefined) ? movie.poster :
 		(movie.poster_path !== null && movie.poster_path !== undefined) ? movie.poster_path:
@@ -86,6 +94,7 @@ export async function addMovieToCart(movie) {
 			:  `https://image.tmdb.org/t/p/w500${rawPoster.startsWith('/') ? '' : '/'}${rawPoster}`;
 		}
 
+		//Constructs movieItem to add to cart
 		const newItem = {
 			id: targetId,
 			title: movie.title,
@@ -95,15 +104,16 @@ export async function addMovieToCart(movie) {
 
 		cart.push(newItem);
 
-		
+		//merges cart with cart in Firestore
 		await setDoc(userDocRef, {cart: cart}, {merge: true});
 
 		alert(`Added "${movie.title}" to cart!`);
 
+		//Refreshes cart upon adding new movie
 		renderCartView();
 
 	}catch(error){
-		console.error("Failed to add movie to cart in Firestore:", error);
+		console.error("Failed to add movie to cart in Firestore:", error); //console error checks for error handling
 		alert("Failed to update cart. Please try again.");
 	}
 	
@@ -111,6 +121,8 @@ export async function addMovieToCart(movie) {
 	
 }
 
+
+//function for rendering cart
 export async function renderCartView() {
 	const shoppingCart = document.getElementById('shoppingCart');
 	if(!shoppingCart) return;
@@ -121,6 +133,7 @@ export async function renderCartView() {
 		return;
 	}
 
+		//syncs cart with syncCart function
 	const cart = await syncCartfromFireStore(user.uid); 
 
 	if (cart.length === 0) {
@@ -129,8 +142,10 @@ export async function renderCartView() {
 		return;
 	}
 
+	//Calculates total price
 	const totalPrice = cart.reduce((sum, item) => sum +(item.price || 40), 0);
 
+	//destructures items in cart and gives them a card
 	const itemsHTML = cart.map(item => {
 		
 		
@@ -159,6 +174,7 @@ export async function renderCartView() {
 		</div>
 	`;
 
+	//removing movie from cart
 	document.querySelectorAll('.removeItemBtn').forEach(btn => {
 		btn.addEventListener('click', (e) => {
 			const movieId = e.target.getAttribute('data-id');
@@ -166,6 +182,8 @@ export async function renderCartView() {
 		});
 	});
 
+
+	//Button for checking out and ordering
 	document.getElementById('checkoutBtn').addEventListener('click', async() => {
 		await checkout();
 	})
@@ -175,7 +193,7 @@ export async function renderCartView() {
 }
 
 
-
+//Function for removing item from cart
 async function removeFromCart(movieId) {
   const user = auth.currentUser;
   if(!user) return;
@@ -183,17 +201,19 @@ async function removeFromCart(movieId) {
   try{
 	let cart = await syncCartfromFireStore(user.uid);
 
+	//defines movie by matching to movie id
 	const idtoRemove = String(movieId);
-	cart = cart.filter(item => String(item.id) !== idtoRemove);
+	cart = cart.filter(item => String(item.id) !== idtoRemove); //filtes through cart and removes by movieId
 
 
 
-	const userDocRef = doc(db, "users", user.uid);
-	await setDoc(userDocRef, {cart: cart}, {merge: true});
+	const userDocRef = doc(db, "users", user.uid); //finds the users reference document
+	await setDoc(userDocRef, {cart: cart}, {merge: true}); //merges users cart with Firestore cart after removing item
 
+	//refreshes cart upon removing item
 	renderCartView();
   }catch(error){
-	console.error("Failed to remove item from Firestore", error);
+	console.error("Failed to remove item from Firestore", error); //console error for error handling
   }
 
 

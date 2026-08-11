@@ -1,24 +1,26 @@
+//IMPORTS
 import {doc, getDoc, setDoc} from 'firebase/firestore/lite';
 import { db, auth } from './firebaseconfig.js';
 import { renderCartView, syncCartfromFireStore } from './cartService.js';
 
 
-
+//function for checking out
 export async function checkout() {
 	const user = auth.currentUser;
 	if(!user) return alert("PLease log in to complete your purchase.");
 
 	try{
-
+                //sync function for fetching cart
 		const rawCart = await syncCartfromFireStore(user.uid);
 		const cart = Array.isArray(rawCart) ? rawCart : [];
 
 		if (cart.length === 0) {
 			return alert("Your cart is empty!");
-		}
+		} //checks it the cart has any items
 
-		const totalPrice = cart.reduce((sum, item) => sum + (item.price || 40), 0);
+		const totalPrice = cart.reduce((sum, item) => sum + (item.price || 40), 0); //calculates total price of items
 
+        //Creates a new order item based on the payload recieved from cart
 		const newOrder = {
 			orderId: `ORD-${Date.now()}${user.uid.slice(0,7)}`,
 			createdAt: new Date().toISOString(),
@@ -26,21 +28,22 @@ export async function checkout() {
 			items: cart
 		};
 
+        //defining const for functions
 		const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
         const userData = userDoc.exists() ? userDoc.data() : {};
         const existingOrders = Array.isArray(userData.orders) ? userData.orders : [];
 
-
+        //adds a new order into users orders array
 		await setDoc(userDocRef, {
 			orders: [newOrder, ...existingOrders],
 			cart: []
 		}, {merge: true});
 
 
-		alert("🎉 Purchase confrimed! enjoy your movies!.");
+		alert("🎉 Purchase confrimed! enjoy your movies!."); //upon ordering
 
-		await renderCartView();
+		await renderCartView(); //refreshes cart
 
 
 	} catch(error){
@@ -54,7 +57,7 @@ export async function checkout() {
 
 
 
-
+//function for rendering order history
 export async function renderOrderHistory(){
 	  const orderHistoryContainer = document.getElementById('orderHistory');
 	  if(!orderHistoryContainer) return;
@@ -81,8 +84,9 @@ export async function renderOrderHistory(){
         if (orders.length === 0) {
             orderHistoryContainer.innerHTML = `<p>You haven't rented any movies yet.</p>`;
             return;
-        }
+        } // If the user has not ordered any movies
 
+        //maps through orders and destructures them into viewable 'cards'
         const ordersHTML = orders.map(({ orderId, createdAt, totalPrice, items }) => {
             const formattedDate = new Date(createdAt).toLocaleDateString('en-US', {
                 year: 'numeric',
@@ -121,8 +125,8 @@ export async function renderOrderHistory(){
         orderHistoryContainer.innerHTML = `<h3>Your Rentals</h3>${ordersHTML}`;
 
     } catch (error) {
-        console.error("Failed to render order history:", error);
-        orderHistoryContainer.innerHTML = `<p>Could not load order history.</p>`;
+        console.error("Failed to render order history:", error); //for error handling
+        orderHistoryContainer.innerHTML = `<p>Could not load order history.</p>`; //html for if orders could not load
     }
 
 

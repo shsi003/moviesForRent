@@ -89,7 +89,7 @@ export function handleSignup(e) {
 }
 
 
-
+//Function for handling sign in
 export function handleSignIn(e) {
 	e.preventDefault();
 
@@ -124,7 +124,7 @@ export function handleSignIn(e) {
 
 
 
-
+//Checks user authentication
 onAuthStateChanged(auth, (user) => {
   if (user) {
     // User is signed in, see docs for a list of available properties
@@ -138,6 +138,7 @@ onAuthStateChanged(auth, (user) => {
 });
 
 
+//Function for logging out
 export function logOut(e) {
 	if(e) e.preventDefault();
 	

@@ -1,10 +1,13 @@
+//IMPORTS
 import { addMovieToCart } from "./cartService.js";
 
 
+//Defining API, env variables, and urls
 const TMBD_API_KEY = process.env.TMBD_API_KEY
 const TMBD_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
+//Function for fetching movies
 export async function fetchMovies(query = '', genreId = ''){
 	let url = `${TMBD_BASE_URL}/movie/popular?api_key=${TMBD_API_KEY}&language=en-US&page=1`;
 
@@ -26,6 +29,8 @@ export async function fetchMovies(query = '', genreId = ''){
 
 }
 
+
+//Function for rendering fetched movies
 function renderMovies(movies) {
 	const movieGrid = document.getElementById('movieGrid');
 	if (!movieGrid) return;
@@ -36,13 +41,14 @@ function renderMovies(movies) {
 	}
 
 	movieGrid.innerHTML = movies.map(movie => {
-		const poster = movie.poster_path
+		const poster = movie.poster_path		//fetches posters for movies
 		?`${IMAGE_BASE_URL}${movie.poster_path}`
 		:'https://via.placeholder.com/500x750?text=No+Poster';
 
-		const movieSynopsis = getSentences(movie.overview, 2);
+		const movieSynopsis = getSentences(movie.overview, 2); //fetches synopsis
 
-		return `
+		//constructs a movie card with the fetched content - same principle as SWAPI Project
+		return ` 
 		<div class="movie-card" data-id="${movie.id}">
 			<img src="${poster}" alt="${movie.title}">
 			<div class="movie-info">
@@ -78,9 +84,9 @@ function renderMovies(movies) {
 				price: 40
 			};
 
-			addMovieToCart(movieData);
+			addMovieToCart(movieData); //imports form cartService.js
 
-			console.log("Constructed moviedata payload:", movieData);
+			console.log("Constructed moviedata payload:", movieData); //Checks payload in console - useful to ensure all data was transferred correctly
 		
 		});
 	});
@@ -97,6 +103,7 @@ const genreSelect = document.getElementById('genreSelect');
 const searchInput = document.getElementById('searchInput');
 
 
+//Filtering function for genre-selection
 export function movieFiltering(){
 
 	if (genreSelect) {
@@ -111,33 +118,33 @@ export function movieFiltering(){
 
 }
 
-
+//Function for fetching cast
 async function loadMovieCast(movieId) {
 
 	const castElement = document.getElementById(`cast-${movieId}`);
 
 	try{
-		const url =`${TMBD_BASE_URL}/movie/${movieId}/credits?api_key=${TMBD_API_KEY}&language=en-US`;
+		const url =`${TMBD_BASE_URL}/movie/${movieId}/credits?api_key=${TMBD_API_KEY}&language=en-US`; //Uses API key and movie url to fetch data
 	const response = await fetch(url);
 		if(!response.ok) return;
 
 	const data = await response.json();
 
-	const topActors = data?.cast?.slice(0,3).map(actor => actor.name).join(', ');
+	const topActors = data?.cast?.slice(0,3).map(actor => actor.name).join(', '); //Looks through casts and actor arrays to fetch names
 
 
 	if(castElement) {
-		castElement.innerHTML = `<strong>Cast:</strong> ${topActors || 'N/A'}`;
+		castElement.innerHTML = `<strong>Cast:</strong> ${topActors || 'N/A'}`; //Ties actor names to HTML elements
 	}
 
 	} catch(error){
-		console.error(`Failed to load cast for movie: ${movie.title}  id: ${movie.id}`, error);
+		console.error(`Failed to load cast for movie: ${movie.title}  id: ${movie.id}`, error); //Console log message for error handling
 	}
 	
 }
 
 
-
+//function for fetching sentences for synopsis
 function getSentences(text, count = 2) {
 	if(!text) return 'No Synopsis available';
 	const sentences = text.match(/[^.!?]+[.!?]+/g);

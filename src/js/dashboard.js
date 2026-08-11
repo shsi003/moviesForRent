@@ -1,3 +1,4 @@
+//IMPORTS - functions
 import { onAuthStateChanged,} from "firebase/auth";
 import {  getDoc, doc } from 'firebase/firestore/lite';
 import { db, auth } from "./firebaseconfig.js";
@@ -12,6 +13,7 @@ import { renderCartView, syncCartfromFireStore } from "./cartService.js";
 import { renderOrderHistory } from "./orderingAndHistory.js";
 
 
+//IMPORTS - css
 import '../css/dashboard.css';
 import '../css/fetchMovies.css';
 import '../css/ordersSection.css';
@@ -20,6 +22,7 @@ import '../css/cart.css';
 
 document.addEventListener("DOMContentLoaded", () => {
 	
+	//Marking DOM-Elements
 	const menuSection = document.getElementById('menuSection');
 	const shoppingCart = document.getElementById('shoppingCartSection');
 	const previousOrders = document.getElementById('previousOrders');
@@ -33,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	const logOutBtn = document.getElementById('logOutBtn');
 
 
+	//Buttons for tab selection
 	menuBtn.addEventListener('click', showMenu);
 	cartBtn.addEventListener('click', showCart);		
 	OrdersBtn.addEventListener('click',showOrders);
@@ -42,7 +46,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	
 	
 
-
+	//Loads funcitons upon auth-check
 	onAuthStateChanged(auth, (user) => {
 		if (user) {
 

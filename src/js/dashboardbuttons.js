@@ -1,4 +1,4 @@
-
+//Functions for showing each tab
 
 export function showMenu() {
 	shoppingCartSection.style.display = 'none';

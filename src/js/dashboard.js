@@ -9,9 +9,12 @@ import { fetchMovies, movieFiltering } from "./fetchMoviesApi.js";
 
 import { renderCartView, syncCartfromFireStore } from "./cartService.js";
 
+import { renderOrderHistory } from "./orderingAndHistory.js";
+
 
 import '../css/dashboard.css';
 import '../css/fetchMovies.css';
+
 
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -64,6 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
 		  showMenu();
 	      syncCartfromFireStore();
 		  renderCartView();
+		  renderOrderHistory();
 	  
 		  
 		} else {

@@ -1,5 +1,6 @@
 import {doc, getDoc, setDoc} from 'firebase/firestore/lite';
 import { db, auth } from './firebaseconfig.js';
+import { checkout } from './orderingAndHistory.js';
 
 
 
@@ -35,7 +36,13 @@ export async function addMovieToCart(movie) {
 	if(!user) return alert("please login to add items to cart.");
 
 	try{
+
+		const userDocRef = doc(db, "users", user.uid );
+		const userDoc = await getDoc(userDocRef);
+        const userData = userDoc.exists() ? userDoc.data() : {};
+
 		const cart = await syncCartfromFireStore(user.uid);
+		const orders = Array.isArray(userData.orders) ? userData.orders : [];
 
 		const targetId = String(movie.id);
 		const exists = cart.some(item => String(item.id) === targetId);
@@ -45,10 +52,31 @@ export async function addMovieToCart(movie) {
 			return;
 		}
 
+
+		const FORTY_EIGHT_HOURS_MS = 48 * 60 * 60 * 1000;
+        const now = Date.now();
+
+        const activeRental = orders.find(order => {
+            const orderTime = new Date(order.createdAt).getTime();
+            const isWithin48Hours = (now - orderTime) < FORTY_EIGHT_HOURS_MS;
+            const containsMovie = order.items && order.items.some(item => String(item.id) === targetId);
+            
+            return isWithin48Hours && containsMovie;
+        });
+
+        if (activeRental) {
+            const rentalTime = new Date(activeRental.createdAt).getTime();
+            const hoursLeft = Math.ceil((FORTY_EIGHT_HOURS_MS - (now - rentalTime)) / (1000 * 60 * 60));
+            
+            alert(`You are currently renting "${movie.title}"! Your access expires in approximately ${hoursLeft} hour(s).`);
+			console.log(`You are currently renting "${movie.title}"! Your access expires in approximately ${hoursLeft} hour(s).`)
+            return;
+        }
+
 		const rawPoster = 
 		(movie.poster !== null && movie.poster !== undefined) ? movie.poster :
 		(movie.poster_path !== null && movie.poster_path !== undefined) ? movie.poster_path:
-		(movie.backdrop_path !== null && movie.backdrop_path !== undefined) ? movie-backdrop_path:
+		(movie.backdrop_path !== null && movie.backdrop_path !== undefined) ? movie.backdrop_path:
 		'';
 
 		let finalPoster = '';
@@ -67,7 +95,7 @@ export async function addMovieToCart(movie) {
 
 		cart.push(newItem);
 
-		const userDocRef = doc(db, "users", user.uid );
+		
 		await setDoc(userDocRef, {cart: cart}, {merge: true});
 
 		alert(`Added "${movie.title}" to cart!`);
@@ -137,6 +165,11 @@ export async function renderCartView() {
 			removeFromCart(movieId);
 		});
 	});
+
+	document.getElementById('checkoutBtn').addEventListener('click', async() => {
+		await checkout();
+	})
+	
 
  
 }

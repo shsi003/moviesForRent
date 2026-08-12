@@ -2,7 +2,7 @@ const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
-
+//NOTE TO VIEWER - remember to set mode to 'development' if you're running the app locally
 
 module.exports = {
   mode: 'production',

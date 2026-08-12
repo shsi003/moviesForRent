@@ -28,3 +28,5 @@ link:**[Firebase Auth & Firestore](https://firebase.google.com/docs):**
 ##IMPORTANT - READ##
 You may notice that the first commit pushes a large number of files, stacked full of code.
 this is because it originally started as  a "first-draft" or a practice project (AFTER RECEIVING THE ASSIGNMENT AND CRITERIA) for my final project, but as I put more time into it, I grew more invested. 
+
+##IMPORTANT- remember to run npm install to install node_modules when running locally

@@ -1,3 +1,13 @@
+##IMPORTANT- remember to run npm install to install node_modules when running locally
+
+
+
+
+
+
+
+
+## THESE WERE FOR MYSELF- ignore
 #Commands for webpack
 npm install --save-dev webpack webpack-cli webpack-dev-server html-webpack-plugin style-loader css-loader
 

@@ -44,6 +44,7 @@ export async function checkout() {
 		alert("🎉 Purchase confrimed! enjoy your movies!."); //upon ordering
 
 		await renderCartView(); //refreshes cart
+        renderOrderHistory(); //refreshes order history
 
 
 	} catch(error){
@@ -129,6 +130,8 @@ export async function renderOrderHistory(){
         orderHistoryContainer.innerHTML = `<p>Could not load order history.</p>`; //html for if orders could not load
     }
 
+    
+    renderOrderHistory();
 
 
 }

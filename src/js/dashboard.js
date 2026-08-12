@@ -39,7 +39,7 @@ document.addEventListener("DOMContentLoaded", () => {
 	//Buttons for tab selection
 	menuBtn.addEventListener('click', showMenu);
 	cartBtn.addEventListener('click', showCart);		
-	OrdersBtn.addEventListener('click',showOrders);
+	OrdersBtn.addEventListener('click', showOrders)
 	logOutBtn.addEventListener('click', logOut);
 
 

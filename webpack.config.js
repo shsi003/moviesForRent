@@ -3,6 +3,7 @@ const HtmlWebpackPlugin = require('html-webpack-plugin');
 const Dotenv = require('dotenv-webpack');
 
 
+
 module.exports = {
   mode: 'development',
   devtool: 'eval-source-map',
@@ -23,7 +24,9 @@ module.exports = {
     ],
   },
   plugins: [
-    new Dotenv({systemvars:true}),
+    new Dotenv({
+      systemvars:true,
+    }),
     new HtmlWebpackPlugin({ 
       template: path.resolve(__dirname, 'src/index.html'),
       filename: 'index.html',

@@ -3,18 +3,18 @@ import { addMovieToCart } from "./cartService.js";
 
 
 //Defining API, env variables, and urls
-const TMBD_API_KEY = process.env.TMBD_API_KEY
-const TMBD_BASE_URL = 'https://api.themoviedb.org/3';
+const TMDB_API_KEY = process.env.TMDB_API_KEY
+const TMDB_BASE_URL = 'https://api.themoviedb.org/3';
 const IMAGE_BASE_URL = 'https://image.tmdb.org/t/p/w500';
 
 //Function for fetching movies
 export async function fetchMovies(query = '', genreId = ''){
-	let url = `${TMBD_BASE_URL}/movie/popular?api_key=${TMBD_API_KEY}&language=en-US&page=1`;
+	let url = `${TMDB_BASE_URL}/movie/popular?api_key=${TMDB_API_KEY}&language=en-US&page=1`;
 
 	if (query){
-		url = `${TMBD_BASE_URL}/search/movie?api_key=${TMBD_API_KEY}&query=${encodeURIComponent(query)}`;
+		url = `${TMDB_BASE_URL}/search/movie?api_key=${TMDB_API_KEY}&query=${encodeURIComponent(query)}`;
 	} else if (genreId){
-		url = `${TMBD_BASE_URL}/discover/movie?api_key=${TMBD_API_KEY}&with_genres=${genreId}`;
+		url = `${TMDB_BASE_URL}/discover/movie?api_key=${TMDB_API_KEY}&with_genres=${genreId}`;
 	}
 
 	try {
@@ -124,7 +124,7 @@ async function loadMovieCast(movieId) {
 	const castElement = document.getElementById(`cast-${movieId}`);
 
 	try{
-		const url =`${TMBD_BASE_URL}/movie/${movieId}/credits?api_key=${TMBD_API_KEY}&language=en-US`; //Uses API key and movie url to fetch data
+		const url =`${TMDB_BASE_URL}/movie/${movieId}/credits?api_key=${TMDB_API_KEY}&language=en-US`; //Uses API key and movie url to fetch data
 	const response = await fetch(url);
 		if(!response.ok) return;
 

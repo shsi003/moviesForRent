@@ -138,7 +138,7 @@ async function loadMovieCast(movieId) {
 	}
 
 	} catch(error){
-		console.error(`Failed to load cast for movie: ${movie.title}  id: ${movie.id}`, error); //Console log message for error handling
+		console.error(`Failed to load cast for movie id: ${movieId}`, error); //Console log message for error handling
 	}
 	
 }
